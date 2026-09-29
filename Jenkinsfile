@@ -23,6 +23,7 @@ pipeline {
                 // Run tests
                 sh 'mvn test'
             }
+        }
 
         stage('Deliver') {
             steps {
@@ -38,4 +39,3 @@ pipeline {
             }
         }
     }
-}

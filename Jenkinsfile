@@ -1,9 +1,15 @@
 pipeline {
     agent any
+
     tools {
         // Use the Maven tool configured in Jenkins
         maven 'Maven'
     }
+
+    options {
+        skipStagesAfterUnstable()
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -17,6 +23,13 @@ pipeline {
                 // Run tests
                 sh 'mvn test'
             }
+
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                archiveArtifacts artifacts: 'target/*.jar'
+            }
+        }
             post {
                 // Always archive test results, even if the tests fail
                 always {

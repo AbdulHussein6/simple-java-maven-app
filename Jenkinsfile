@@ -23,6 +23,13 @@ pipeline {
                 // Run tests
                 sh 'mvn test'
             }
+
+            post {
+                // Always archive test results, even if the tests fail
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
+            }
         }
 
         stage('Deliver') {
@@ -31,11 +38,6 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.jar'
             }
         }
-            post {
-                // Always archive test results, even if the tests fail
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
+
         }
     }
